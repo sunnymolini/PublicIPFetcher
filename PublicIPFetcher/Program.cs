@@ -58,6 +58,28 @@ namespace PublicIPFetcher
             }
             else return false;
         }
+        public static string Output0(string IP, string DataDirectory)
+        {
+            string result = "win";
+            if (System.IO.Directory.Exists(DataDirectory))
+            {
+                try
+                {
+
+                    System.IO.StreamWriter sr = new System.IO.StreamWriter(DataDirectory + @"\LastIP.txt");
+                    sr.WriteLine(IP);
+                    sr.Flush();
+                    sr.Close();
+                }
+                catch (Exception ex)
+                {
+                    result = ex.Message;
+                }
+            }
+            else result = "Primary application data directory not found - " + DataDirectory;
+
+            return result; 
+        }
         public static string Output1(string IP)
         {
             string result = "win";
@@ -86,14 +108,16 @@ namespace PublicIPFetcher
 
         static void Main(string[] args)
         {
-            LogMaker logger = new LogMaker("IP-Fetcher");
+            LogMaker logger = new LogMaker(AppName,DataDir);
             logger.Write("Program Starting");
             string newIP = publicIP;
-            logger.Write("IP pull attempt complete, result      - " + newIP);
-            string FirstTry = Output1(newIP);
-            logger.Write("First output attempt complete, result - " + FirstTry);
+            logger.Write("IP pull attempt complete, result            - " + newIP);
+            string Output0Try = Output0(newIP, DataDir);
+            logger.Write("Application data save complete, result      - " + Output0Try);
+            string Output1Try = Output1(newIP);
+            logger.Write("First output attempt complete, result       - " + Output1Try);
 
-            if (FirstTry != "win")
+            if (Output1Try != "win")
             {
  
             }
