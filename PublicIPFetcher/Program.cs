@@ -7,7 +7,19 @@ namespace PublicIPFetcher
 {
     class Program
     {
-
+        public const string AppName = "Public IP Fetcher";
+        public static string DataDir
+        {
+            get
+            {
+                string path = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Molini\" + AppName;
+                if (!System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+                return path;
+            }
+        }
         //  Methods
         public static string publicIP
         {
